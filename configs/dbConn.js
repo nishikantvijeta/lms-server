@@ -12,7 +12,7 @@ mongoose.set("strictQuery", false);
 const connectToDB = async () => {
   try {
     const { connection } = await mongoose.connect(
-      process.env.MONGO_URI || `mongodb+srv://vijeta:<Vijeta32145>@cluster0.s2fxaq4.mongodb.net/`
+      process.env.MONGO_URI || `mongodb+srv://vijeta:<Vijeta32145>@cluster0.s2fxaq4.mongodb.net/lms`
     );
 
     if (connection) {

@@ -12,7 +12,7 @@ mongoose.set("strictQuery", false);
 const connectToDB = async () => {
   try {
     const { connection } = await mongoose.connect(
-      process.env.MONGO_URI ;
+      process.env.MONGODB_URI ;
     );
 
     if (connection) {

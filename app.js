@@ -40,9 +40,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
     origin: [
-      process.env.FRONTEND_URL || 'http://127.0.0.1:3000',
-      'http://localhost:3000', 
-      'http://192.168.133.223:3000'  // Add your device's IP if needed
+      process.env.FRONTEND_URL   // Add your device's IP if needed
     ],
     credentials: true,  // Allow cookies, sessions, and authentication headers
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],  // Allowed methods

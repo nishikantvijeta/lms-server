@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 // ✅ CORS Setup
 app.use(
   cors({
-    origin: "https://lms-5-git-main-nishikants-projects-9dd911be.vercel.app", // ✅ Allow only your frontend
+    origin: "https://lms-5.vercel.app/", // ✅ Allow only your frontend
     credentials: true, // ✅ Required for cookies/sessions
     methods: ["GET", "POST", "PUT", "DELETE"], // ✅ Add allowed methods
     allowedHeaders: ["Content-Type", "Authorization"], // ✅ Add necessary headers

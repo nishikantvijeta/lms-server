@@ -11,8 +11,7 @@ dotenv.config();
 // ✅ Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
-app.use(morgan('dev'));
+
 
 // ✅ CORS Setup
 app.use(
@@ -24,7 +23,8 @@ app.use(
   })
 );
 app.options("*", cors());
-
+app.use(cookieParser());
+app.use(morgan('dev'));
 // ✅ Server Status Route
 app.get('/ping', (_req, res) => {
   res.send('Pong');

@@ -31,7 +31,13 @@ app.use(morgan('dev'));
 app.get('/ping', (_req, res) => {
   res.send('Pong');
 });
+app.get("/", (req, res) => {
+  res.status(200).json({ message: "Server is running!" });
+});
 
+app.head("/", (req, res) => {
+  res.status(200).end();
+});
 // ✅ Import Routes
 import userRoutes from './routes/user.routes.js';
 import courseRoutes from './routes/course.routes.js';

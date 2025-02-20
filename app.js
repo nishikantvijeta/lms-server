@@ -23,7 +23,7 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"], // Define headers
   })
 );
-
+app.options("*", cors());
 
 // ✅ Server Status Route
 app.get('/ping', (_req, res) => {

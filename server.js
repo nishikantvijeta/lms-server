@@ -33,12 +33,12 @@ export const razorpay = new Razorpay({
   key_secret: process.env.RAZORPAY_SECRET,
 });
 
-const PORT = process.env.PORT || 5002;
+const PORT = process.env.PORT ;
 
 
 app.listen(PORT, async () => {
   // Connect to DB
   await connectToDB();
-  console.log(`App is running at http://localhost:${PORT}`);
+ // console.log(`App is running at http://localhost:${PORT}`);
 
 });

@@ -16,12 +16,12 @@ app.use(express.urlencoded({ extended: true }));
 // ✅ CORS Setup
 app.use(
   cors({
-    origin: [process.env.FRONTEND_URL || "https://lms-5.vercel.app"], // Ensure it's inside an array
-    credentials: true, // Allow cookies and authentication headers
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"], // Explicitly allow methods
-    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"], // Define headers
+    origin: "*",
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
+
 app.options("*", cors());
 app.use(cookieParser());
 app.use(morgan('dev'));

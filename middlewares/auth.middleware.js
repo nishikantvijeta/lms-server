@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import AppError from "../utils/appError.js";
 import asyncHandler from "./asyncHandler.middleware.js";
-import User from "../models/User.js"; // Ensure you import the User model if needed
+import User from "../models/user.model.js"; // Ensure you import the User model if needed
 
 // Middleware to check if the user is logged in
 export const isLoggedIn = asyncHandler(async (req, _res, next) => {

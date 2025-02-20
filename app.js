@@ -17,12 +17,13 @@ app.use(morgan('dev'));
 // ✅ CORS Setup
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL ? [process.env.FRONTEND_URL] : "*", // Ensure a valid origin
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"], // Explicitly define headers
+    origin: [process.env.FRONTEND_URL || "https://lms-5.vercel.app"], // Ensure it's inside an array
+    credentials: true, // Allow cookies and authentication headers
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"], // Explicitly allow methods
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"], // Define headers
   })
 );
+
 
 // ✅ Server Status Route
 app.get('/ping', (_req, res) => {

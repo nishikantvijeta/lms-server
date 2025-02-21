@@ -6,7 +6,8 @@ export const isLoggedIn = asyncHandler(async (req, _res, next) => {
     console.log("Cookies received:", req.cookies); // Log cookies to debug
   // Extracting token from cookies
  // const  token  = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoidGVzdFVzZXIiLCJpYXQiOjE3NDAxMTg2NTAsImV4cCI6MTc0MDEyMjI1MH0.Yy6533GgTCRXR88yZ9ldLHQBOasyNpedHr0Zv9MnLUU";
-const  token  = req.headers?.authorization;
+//const  token  = req.headers?.authorization;
+    const token=req.cookies?.token;
   if (!token) {
     return next(new AppError("Unauthorized, please login to continue", 401));
   }

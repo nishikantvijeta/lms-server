@@ -87,8 +87,8 @@ export const registerUser = asyncHandler(async (req, res, next) => {
 
   // Generating a JWT token
   //const token = await user.generateJWTToken();
-  setAuthCookie(res, user);
-//const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: "1h" });
+  //setAuthCookie(res, user);
+const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: "1h" });
 
   // Setting the password to undefined so it does not get sent in the response
   user.password = undefined;
@@ -131,8 +131,8 @@ export const loginUser = asyncHandler(async (req, res, next) => {
   }
 
   // Generating a JWT token
-  setAuthCookie(res, user);
-  //const token = await user.generateJWTToken();
+  //setAuthCookie(res, user);
+  const token = await user.generateJWTToken();
   //const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: "1h" });
 
 
@@ -147,6 +147,7 @@ export const loginUser = asyncHandler(async (req, res, next) => {
     success: true,
     message: 'User logged in successfully',
     user,
+   
     // token:req.token
   });
 });
@@ -187,7 +188,7 @@ export const getLoggedInUserDetails = asyncHandler(async (req, res, _next) => {
     success: true,
     message: 'User details',
     user,
-   //token:req.token
+   setAuthCookie(res, user);
   });
 });
 

@@ -86,8 +86,8 @@ export const registerUser = asyncHandler(async (req, res, next) => {
   await user.save();
 
   // Generating a JWT token
-  //const token = await user.generateJWTToken();
-const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: "1h" });
+  const token = await user.generateJWTToken();
+//const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: "1h" });
 
   // Setting the password to undefined so it does not get sent in the response
   user.password = undefined;
@@ -130,8 +130,8 @@ export const loginUser = asyncHandler(async (req, res, next) => {
   }
 
   // Generating a JWT token
-  //const token = await user.generateJWTToken();
-  const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: "1h" });
+  const token = await user.generateJWTToken();
+  //const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: "1h" });
 
 
   // Setting the password to undefined so it does not get sent in the response

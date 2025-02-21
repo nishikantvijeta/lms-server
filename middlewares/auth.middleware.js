@@ -12,7 +12,8 @@ export const isLoggedIn = asyncHandler(async (req, _res, next) => {
         return res.status(500).json({ error: "JWT_SECRET is not defined in environment variables" });
     }
 
-    const token = jwt.sign({ user: user, role: user.role }, SECRET_KEY, { expiresIn: '1h' });
+    const token = jwt.sign({ user }, SECRET_KEY, { expiresIn: '1h' });
+
 
     res.cookie('token', token, {
         httpOnly: true,

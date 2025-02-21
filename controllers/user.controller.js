@@ -47,7 +47,7 @@ export const registerUser = asyncHandler(async (req, res, next) => {
         'https://res.cloudinary.com/du9jzqlpt/image/upload/v1674647316/avatar_drzgxv.jpg',
     },
   });
- req.session.user = user;
+ //req.session.user = user;
   // If user not created send message response
   if (!user) {
     return next(
@@ -109,6 +109,7 @@ export const registerUser = asyncHandler(async (req, res, next) => {
  * @ACCESS Public
  */
 export const loginUser = asyncHandler(async (req, res, next) => {
+  req.session.user = user;
   // Destructuring the necessary data from req object
   const { email, password } = req.body;
 
@@ -151,6 +152,7 @@ export const loginUser = asyncHandler(async (req, res, next) => {
  * @ACCESS Public
  */
 export const logoutUser = asyncHandler(async (_req, res, _next) => {
+  req.session.destroy();
   // Setting the cookie value to null
   res.cookie('token', null, {
     secure: process.env.NODE_ENV === 'production' ? true : false,

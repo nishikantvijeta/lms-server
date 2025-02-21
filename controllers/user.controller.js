@@ -171,8 +171,10 @@ export const logoutUser = asyncHandler(async (_req, res, _next) => {
  * @ACCESS Private(Logged in users only)
  */
 export const getLoggedInUserDetails = asyncHandler(async (req, res, _next) => {
+  console.log("Decoded User:", req.user); // Debugging step
+
   // Finding the user using the id from modified req object
-  const user = await User.findById(req.user.id);
+  const user = await User.findById(req.user?.id);
 
   res.status(200).json({
     success: true,

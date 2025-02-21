@@ -12,8 +12,8 @@ export const isLoggedIn = asyncHandler(async (req, _res, next) => {
   //  console.log("User data before JWT:", req.user);
 
    // let token = jwt.sign(req.user, SECRET_KEY, { expiresIn: '1h' });  
-   //const token = req.cookies?.token ;  // ✅ Use cookie token if available, otherwise use JWT token
-    const token = req.header('Authorization');
+   const token = req.cookies?.token ;  // ✅ Use cookie token if available, otherwise use JWT token
+   // const token = req.header('Authorization');
   if (!token) {
     return next(new AppError("Unauthorized, please login to continue", 401));
   }

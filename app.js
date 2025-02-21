@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import morgan from 'morgan';
 import errorMiddleware from './middlewares/error.middleware.js';
+import jwt from "jsonwebtoken";
 
 const app = express();
 dotenv.config();

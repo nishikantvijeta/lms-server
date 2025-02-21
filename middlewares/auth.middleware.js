@@ -6,7 +6,7 @@ export const isLoggedIn = asyncHandler(async (req, _res, next) => {
     console.log("Cookies received:", req.cookies); // Log cookies to debug
   // Extracting token from cookies
   //const  token  = req.cookies.token|| req.headers.authorization?.split(" ")[1];
-const  {token}  = req.cookies;
+const  token  = process.env.JWT_SECRET;
   if (!token) {
     return next(new AppError("Unauthorized, please login to continue", 401));
   }

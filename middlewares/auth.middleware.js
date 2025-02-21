@@ -9,10 +9,10 @@ export const isLoggedIn = asyncHandler(async (req, _res, next) => {
 //const  token  = req.headers?.authorization;
     // const token = jwt.sign(req.user, SECRET_KEY, { expiresIn: '1h' });
     // const token=req.cookies?.token;
-    console.log("User data before JWT:", req.user);
+  //  console.log("User data before JWT:", req.user);
 
-    let token = jwt.sign(req.user, SECRET_KEY, { expiresIn: '1h' });  
-    token = req.cookies?.token || token;  // ✅ Use cookie token if available, otherwise use JWT token
+   // let token = jwt.sign(req.user, SECRET_KEY, { expiresIn: '1h' });  
+    token = req.cookies?.token ;  // ✅ Use cookie token if available, otherwise use JWT token
   if (!token) {
     return next(new AppError("Unauthorized, please login to continue", 401));
   }

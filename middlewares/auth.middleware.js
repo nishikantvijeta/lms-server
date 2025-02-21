@@ -19,6 +19,7 @@ const user = await User.findById(userId);
         secure: true,  // Set to true if using HTTPS
         sameSite: "None",
         path: "/",
+         maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
     console.log("JWT Cookie Set:", token);

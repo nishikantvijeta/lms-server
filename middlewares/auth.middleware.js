@@ -1,12 +1,27 @@
 import jwt from "jsonwebtoken";
 import AppError from "../utils/appError.js";
 import asyncHandler from "./asyncHandler.middleware.js";
-
+const SECRET_KEY=process.env.JWT_SECRET;
 export const isLoggedIn = asyncHandler(async (req, _res, next) => {
     console.log("Cookies received:", req.cookies); // Log cookies to debug
   // Extracting token from cookies
  // const  token  = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoidGVzdFVzZXIiLCJpYXQiOjE3NDAxMTg2NTAsImV4cCI6MTc0MDEyMjI1MH0.Yy6533GgTCRXR88yZ9ldLHQBOasyNpedHr0Zv9MnLUU";
 //const  token  = req.headers?.authorization;
+    app.get('/set-cookie', (req, res) => {
+    if (!SECRET_KEY) {
+        return res.status(500).json({ error: "JWT_SECRET is not defined in environment variables" });
+    }
+
+    const token = jwt.sign({ user: "user: user.username, role: user.role " }, SECRET_KEY, { expiresIn: '1h' });
+
+    res.cookie('token', token, {
+        httpOnly: true,
+        secure: true, // Set to true if using HTTPS
+        sameSite: 'strict'
+    });
+
+    res.json({ message: "JWT Cookie set!", token });
+});
     const token=req.cookies?.token;
   if (!token) {
     return next(new AppError("Unauthorized, please login to continue", 401));

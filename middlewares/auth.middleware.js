@@ -3,7 +3,7 @@ import AppError from "../utils/appError.js";
 import asyncHandler from "./asyncHandler.middleware.js";
 import User from "../models/user.model.js";
 const SECRET_KEY=process.env.JWT_SECRET;
-const user = await User.findById(userId);
+
 export const setAuthCookie = (res, user) => {
     if (!process.env.JWT_SECRET) {
         throw new Error("JWT_SECRET is not defined in environment variables");

@@ -32,21 +32,7 @@ const SECRET_KEY = process.env.JWT_SECRET; // Replace with your actual secret ke
 
 //app.use(cookieParser());
 
-app.get('/set-cookie', (req, res) => {
-    if (!SECRET_KEY) {
-        return res.status(500).json({ error: "JWT_SECRET is not defined in environment variables" });
-    }
 
-    const token = jwt.sign({ user: "testUser" }, SECRET_KEY, { expiresIn: '1h' });
-
-    res.cookie('token', token, {
-        httpOnly: true,
-        secure: true, // Set to true if using HTTPS
-        sameSite: 'strict'
-    });
-
-    res.json({ message: "JWT Cookie set!", token });
-});
 app.get('/check-cookie', (req, res) => {
     const token = req.cookies.token; // Accessing the cookie
 

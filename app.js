@@ -19,7 +19,7 @@ app.use(
     origin: "https://lms-5.vercel.app", // ✅ Allow only your frontend
     credentials: true, // ✅ Required for cookies/sessions
     methods: ["GET", "POST", "PUT", "DELETE"], // ✅ Add allowed methods
-    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"] // ✅ Add necessary headers
+    allowedHeaders: ["Content-Type", "Authorization"] // ✅ Add necessary headers
   })
 );
 

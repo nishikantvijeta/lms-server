@@ -188,7 +188,7 @@ export const getLoggedInUserDetails = asyncHandler(async (req, res, _next) => {
     success: true,
     message: 'User details',
     user,
-   setAuthCookie(res, user);
+   setAuthCookie(res, user),
   });
 });
 

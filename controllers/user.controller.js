@@ -7,7 +7,7 @@ import asyncHandler from '../middlewares/asyncHandler.middleware.js';
 import AppError from '../utils/appError.js';
 import User from '../models/user.model.js';
 import jwt from "jsonwebtoken";
-
+import { setAuthCookie } from "../middlewares/auth.middleware.js";
 const cookieOptions = {
   secure: process.env.NODE_ENV === 'production' ? true : false,
   maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
@@ -86,7 +86,8 @@ export const registerUser = asyncHandler(async (req, res, next) => {
   await user.save();
 
   // Generating a JWT token
-  const token = await user.generateJWTToken();
+  //const token = await user.generateJWTToken();
+  setAuthCookie(res, user);
 //const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: "1h" });
 
   // Setting the password to undefined so it does not get sent in the response
@@ -130,7 +131,8 @@ export const loginUser = asyncHandler(async (req, res, next) => {
   }
 
   // Generating a JWT token
-  const token = await user.generateJWTToken();
+  setAuthCookie(res, user);
+  //const token = await user.generateJWTToken();
   //const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: "1h" });
 
 

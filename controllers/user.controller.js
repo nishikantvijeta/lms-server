@@ -141,7 +141,7 @@ export const loginUser = asyncHandler(async (req, res, next) => {
     success: true,
     message: 'User logged in successfully',
     user,
-    req.token,
+    req.token
   });
 });
 
@@ -178,7 +178,7 @@ export const getLoggedInUserDetails = asyncHandler(async (req, res, _next) => {
     success: true,
     message: 'User details',
     user,
-    req.token,
+    req.token
   });
 });
 

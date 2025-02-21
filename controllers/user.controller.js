@@ -183,12 +183,12 @@ export const getLoggedInUserDetails = asyncHandler(async (req, res, _next) => {
 
   // Finding the user using the id from modified req object
   const user = await User.findById(req.user?.id);
-
+ setAuthCookie(res, user);
   res.status(200).json({
     success: true,
     message: 'User details',
     user,
-   setAuthCookie(res, user),
+  
   });
 });
 

@@ -47,7 +47,7 @@ export const registerUser = asyncHandler(async (req, res, next) => {
         'https://res.cloudinary.com/du9jzqlpt/image/upload/v1674647316/avatar_drzgxv.jpg',
     },
   });
-
+ req.session.user = user;
   // If user not created send message response
   if (!user) {
     return next(

@@ -28,14 +28,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 const SECRET_KEY = process.env.JWT_SECRET; // Replace with your actual secret key
-import session from "express-session";
 
-app.use(session({
-    secret: SECRET_KEY,  // Change this to a strong secret key
-    resave: false,
-    saveUninitialized: false,
-    cookie: { secure: true }  // Use `true` if using HTTPS
-}));
+
+
 
 //app.use(cookieParser());
 app.get('/set-cookie', (req, res) => {

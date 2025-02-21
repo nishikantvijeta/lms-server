@@ -10,7 +10,22 @@ const app = express();
 dotenv.config();
 
 // ✅ Middlewares
+ app.get('/set-cookie', (req, res) => {
+    if (!SECRET_KEY) {
+        return res.status(500).json({ error: "JWT_SECRET is not defined in environment variables" });
+    }
 
+    const token = jwt.sign({ user }, SECRET_KEY, { expiresIn: '1h' });
+
+
+    res.cookie('token', token, {
+        httpOnly: true,
+        secure: true, // Set to true if using HTTPS
+        sameSite: 'strict'
+    });
+
+    res.json({ message: "JWT Cookie set!", token });
+});
 
 
 // ✅ CORS Setup

@@ -44,7 +44,8 @@ app.get('/set-cookie', (req, res) => {
     res.cookie('token', token, {
         httpOnly: true,
         secure: true, // Set to true if using HTTPS
-        sameSite: "None"
+        sameSite: "None",
+     path: "/"
     });
 
     res.json({ message: "JWT Cookie set!", token });

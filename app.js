@@ -38,7 +38,7 @@ app.get('/set-cookie', (req, res) => {
         return res.status(500).json({ error: "JWT_SECRET is not defined in environment variables" });
     }
 
-    const token = jwt.sign({ user: "testUser", role: "admin"}, SECRET_KEY, { expiresIn: '1h' });
+    const token = jwt.sign({ id: user._id, role: user.role}, SECRET_KEY, { expiresIn: process.env.JWT_EXPIRY });
 
 
     res.cookie('token', token, {

@@ -1,7 +1,29 @@
 import jwt from "jsonwebtoken";
 import AppError from "../utils/appError.js";
 import asyncHandler from "./asyncHandler.middleware.js";
+import User from "../models/user.model.js";
 const SECRET_KEY=process.env.JWT_SECRET;
+export const setAuthCookie = (res, user) => {
+    if (!process.env.JWT_SECRET) {
+        throw new Error("JWT_SECRET is not defined in environment variables");
+    }
+const user = await User.findById(userId);
+    const token = jwt.sign(
+        { id: user._id, role: user.role},
+        process.env.JWT_SECRET,
+        { expiresIn: process.env.JWT_EXPIRY }
+    );
+
+    res.cookie("token", token, {
+        httpOnly: true,
+        secure: true,  // Set to true if using HTTPS
+        sameSite: "None",
+        path: "/",
+    });
+
+    console.log("JWT Cookie Set:", token);
+    return token;
+};
 export const isLoggedIn = asyncHandler(async (req, _res, next) => {
     console.log("Cookies received:", req.cookies); // Log cookies to debug
   // Extracting token from cookies

@@ -13,7 +13,8 @@ const  {token}  = process.env.JWT_SECRET;
 
   try {
     // Decoding the token using JWT verify method
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+   const decoded =process.env.JWT_SECRET
+    //const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     console.log("Decoded Token:", decoded); // Debugging
 

@@ -7,7 +7,7 @@ import asyncHandler from '../middlewares/asyncHandler.middleware.js';
 import AppError from '../utils/appError.js';
 import User from '../models/user.model.js';
 import jwt from "jsonwebtoken";
-import { setAuthCookie } from "../middlewares/auth.middleware.js";
+//import { setAuthCookie } from "../middlewares/auth.middleware.js";
 const cookieOptions = {
   secure: process.env.NODE_ENV === 'production' ? true : false,
   maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days

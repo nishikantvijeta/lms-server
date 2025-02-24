@@ -100,7 +100,7 @@ const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: "1h" });
   res.status(201).json({
     success: true,
     message: 'User registered successfully',
-    token,
+   // token,
     user,
     
   });
@@ -148,7 +148,7 @@ export const loginUser = asyncHandler(async (req, res, next) => {
     success: true,
     message: 'User logged in successfully',
     user,
-   token,
+  // token,
     // token:req.token
   });
 });
@@ -189,7 +189,7 @@ export const getLoggedInUserDetails = asyncHandler(async (req, res, _next) => {
     success: true,
     message: 'User details',
     user,
-  token,
+ // token,
   });
 });
 

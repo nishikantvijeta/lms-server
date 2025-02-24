@@ -56,9 +56,7 @@ export const isLoggedIn = asyncHandler(async (req, _res, next) => {
     return next(new AppError("Invalid or expired token, please login again", 401));
   }
 });
-/**
-* @param  {...string} roles 
- */
+
 // Middleware to check if user is admin or not
 export const authorizeRoles = (...roles) =>
   asyncHandler(async (req, _res, next) => {

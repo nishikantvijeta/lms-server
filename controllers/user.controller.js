@@ -12,7 +12,7 @@ const cookieOptions = {
   secure: process.env.NODE_ENV === 'production' ? true : false,
   maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   httpOnly: true,
-  sameSite: "lax",
+  sameSite: "none",
 };
 
 /**

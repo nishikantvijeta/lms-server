@@ -86,9 +86,9 @@ export const registerUser = asyncHandler(async (req, res, next) => {
   await user.save();
 
   // Generating a JWT token
-  //const token = await user.generateJWTToken();
+  const token = await user.generateJWTToken();
   //setAuthCookie(res, user);
-const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: "1h" });
+//const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: "1h" });
 
   // Setting the password to undefined so it does not get sent in the response
   user.password = undefined;
@@ -189,8 +189,8 @@ export const getLoggedInUserDetails = asyncHandler(async (req, res, _next) => {
     success: true,
     message: 'User details',
     user,
-    token: req.token,
- // token,
+    //token: req.token,
+ 
   });
 });
 
@@ -217,8 +217,8 @@ export const forgotPassword = asyncHandler(async (req, res, next) => {
   }
 
   // Generating the reset token via the method we have in user model
-  //const resetToken = await user.generatePasswordResetToken();
-const resetToken = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: "1h" });
+  const resetToken = await user.generatePasswordResetToken();
+//const resetToken = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: "1h" });
 
   // Saving the forgotPassword* to DB
   await user.save();

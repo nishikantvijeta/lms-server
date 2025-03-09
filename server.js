@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 import app from './app.js';
 
 import dotenv from 'dotenv';
-dotenv.config({ path: 'd:/pw web/lms/server/.env' }); // Specify the full path to the .env file
+dotenv.config();
 
 import connectToDB from './configs/dbConn.js';
 

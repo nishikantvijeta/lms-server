@@ -14,6 +14,7 @@ import Payment from '../models/Payment.model.js';
 export const buySubscription = asyncHandler(async (req, res, next) => {
   // Extracting ID from request obj
   const { id } = req.user;
+console.log("Request User Data:", req.user);
 
   // Finding the user based on the ID
   const user = await User.findById(id);

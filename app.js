@@ -1,42 +1,45 @@
-import express from 'express';
-import { config } from 'dotenv';
-import cors from 'cors';
-import morgan from 'morgan';
-import cookieParser from 'cookie-parser';
-import jwt from 'jsonwebtoken';
-import errorMiddleware from './middlewares/error.middleware.js';
-
-config(); // ✅ Correct placement
+import cookieParser from "cookie-parser";
+import express from "express";
+import dotenv from "dotenv";
+import cors from "cors";
+import morgan from "morgan";
+import errorMiddleware from "./middlewares/error.middleware.js";
+import jwt from "jsonwebtoken";
 
 const app = express();
+dotenv.config();
 
-// ✅ Middlewares
+const SECRET_KEY = process.env.JWT_SECRET;
+
+// ✅ Middlewares (Order is Important)
+app.use(cors({
+  origin: "https://lms-5.vercel.app",
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+}));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
-app.use(
-  cors({
-    origin: [process.env.FRONTEND_URL],
-    credentials: true,
-  })
-);
-app.use(morgan('dev'));
+app.use(cookieParser()); // ✅ Place before routes
+app.use(morgan("dev"));
 
-// ✅ Securely set JWT token in a cookie
-app.get('/set-cookie', (req, res) => {
-    const user = { _id: "123456", role: "admin" }; // Mock user for testing
-
-    if (!process.env.JWT_SECRET) {
-        return res.status(500).json({ error: "JWT_SECRET is missing in .env file" });
+// ✅ Set Cookie Route (Test Route)
+app.get("/set-cookie", (req, res) => {
+    if (!SECRET_KEY) {
+        return res.status(500).json({ error: "JWT_SECRET is not defined in environment variables" });
     }
 
-    const token = jwt.sign(user, process.env.JWT_SECRET, {
-        expiresIn: process.env.JWT_EXPIRY || "1h",
+    // Mock user (Replace with real database user)
+    const user = { _id: "123456789", role: "user" };
+
+    const token = jwt.sign({ id: user._id, role: user.role }, SECRET_KEY, { 
+        expiresIn: process.env.JWT_EXPIRY 
     });
 
-    res.cookie('token', token, {
+    res.cookie("token", token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production", // ✅ Secure only in production
+        secure: true,
         sameSite: "None",
         path: "/",
     });
@@ -44,15 +47,16 @@ app.get('/set-cookie', (req, res) => {
     res.json({ message: "JWT Cookie set!", token });
 });
 
-// ✅ Check if JWT cookie is valid
-app.get('/check-cookie', (req, res) => {
+// ✅ Check Cookie Route
+app.get("/check-cookie", (req, res) => {
+    console.log("Received Cookies:", req.cookies); // Debugging
+    
     const token = req.cookies.token;
-
     if (!token) {
         return res.status(401).json({ success: false, message: "No cookie found!" });
     }
 
-    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    jwt.verify(token, SECRET_KEY, (err, decoded) => {
         if (err) {
             return res.status(403).json({ success: false, message: "Invalid token!" });
         }
@@ -60,24 +64,23 @@ app.get('/check-cookie', (req, res) => {
     });
 });
 
-// ✅ Routes
-import userRoutes from './routes/user.routes.js';
-import courseRoutes from './routes/course.routes.js';
-import paymentRoutes from './routes/payment.routes.js';
-import miscRoutes from './routes/miscellaneous.routes.js';
+// ✅ Import Routes
+import userRoutes from "./routes/user.routes.js";
+import courseRoutes from "./routes/course.routes.js";
+import paymentRoutes from "./routes/payment.routes.js";
+import miscRoutes from "./routes/miscellaneous.routes.js";
 
-app.use('/api/v1/user', userRoutes);
-app.use('/api/v1/courses', courseRoutes);
-app.use('/api/v1/payments', paymentRoutes);
-app.use('/api/v1', miscRoutes);
+app.use("/api/v1/user", userRoutes);
+app.use("/api/v1/courses", courseRoutes);
+app.use("/api/v1/payments", paymentRoutes);
+app.use("/api/v1/misc", miscRoutes);
 
-// ✅ 404 Route
-app.all('*', (_req, res) => {
-  res.status(404).send('OOPS!!! 404 Page Not Found');
+// ✅ Default 404 Route
+app.all("*", (_req, res) => {
+  res.status(404).json({ error: "OOPS!!! 404 Page Not Found" });
 });
 
-// ✅ Error Middleware
+// ✅ Custom Error Middleware
 app.use(errorMiddleware);
 
 export default app;
-

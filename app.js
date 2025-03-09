@@ -1,59 +1,52 @@
-import cookieParser from 'cookie-parser';
 import express from 'express';
-import dotenv from 'dotenv';
+import { config } from 'dotenv';
 import cors from 'cors';
 import morgan from 'morgan';
+import cookieParser from 'cookie-parser';
+import jwt from 'jsonwebtoken';
 import errorMiddleware from './middlewares/error.middleware.js';
-import jwt from "jsonwebtoken";
+
+config(); // ✅ Correct placement
 
 const app = express();
-dotenv.config();
 
 // ✅ Middlewares
- 
-
-// ✅ CORS Setup
-app.use(
-  cors({
-    origin: "https://lms-5.vercel.app", // ✅ Allow only your frontend
-    credentials: true, // ✅ Required for cookies/sessions
-    methods: ["GET", "POST", "PUT", "DELETE"], // ✅ Add allowed methods
-    allowedHeaders: ["Content-Type", "Authorization" ,"Set-Cookie"] // ✅ Add necessary headers
-  })
-);
-
-app.options("*", cors());
-app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(
+  cors({
+    origin: [process.env.FRONTEND_URL],
+    credentials: true,
+  })
+);
 app.use(morgan('dev'));
-const SECRET_KEY = process.env.JWT_SECRET; // Replace with your actual secret key
 
-
-
-
-//app.use(cookieParser());
+// ✅ Securely set JWT token in a cookie
 app.get('/set-cookie', (req, res) => {
-    if (!SECRET_KEY) {
-        return res.status(500).json({ error: "JWT_SECRET is not defined in environment variables" });
+    const user = { _id: "123456", role: "admin" }; // Mock user for testing
+
+    if (!process.env.JWT_SECRET) {
+        return res.status(500).json({ error: "JWT_SECRET is missing in .env file" });
     }
 
-    const token = jwt.sign({ id: user._id, role: user.role}, SECRET_KEY, { expiresIn: process.env.JWT_EXPIRY });
-
+    const token = jwt.sign(user, process.env.JWT_SECRET, {
+        expiresIn: process.env.JWT_EXPIRY || "1h",
+    });
 
     res.cookie('token', token, {
         httpOnly: true,
-        secure: true, // Set to true if using HTTPS
+        secure: process.env.NODE_ENV === "production", // ✅ Secure only in production
         sameSite: "None",
-     path: "/"
+        path: "/",
     });
 
     res.json({ message: "JWT Cookie set!", token });
 });
 
-
+// ✅ Check if JWT cookie is valid
 app.get('/check-cookie', (req, res) => {
-    const token = req.cookies.token; // Accessing the cookie
+    const token = req.cookies.token;
 
     if (!token) {
         return res.status(401).json({ success: false, message: "No cookie found!" });
@@ -66,18 +59,8 @@ app.get('/check-cookie', (req, res) => {
         res.json({ success: true, message: "Cookie is valid!", user: decoded });
     });
 });
-// ✅ Server Status Route
-app.get('/ping', (_req, res) => {
-  res.send('Pong');
-});
-app.get("/", (req, res) => {
-  res.status(200).json({ message: "Server is running!" });
-});
 
-app.head("/", (req, res) => {
-  res.status(200).end();
-});
-// ✅ Import Routes
+// ✅ Routes
 import userRoutes from './routes/user.routes.js';
 import courseRoutes from './routes/course.routes.js';
 import paymentRoutes from './routes/payment.routes.js';
@@ -86,14 +69,15 @@ import miscRoutes from './routes/miscellaneous.routes.js';
 app.use('/api/v1/user', userRoutes);
 app.use('/api/v1/courses', courseRoutes);
 app.use('/api/v1/payments', paymentRoutes);
-app.use('/api/v1/misc', miscRoutes);
+app.use('/api/v1', miscRoutes);
 
-// ✅ Default 404 Route
+// ✅ 404 Route
 app.all('*', (_req, res) => {
-  res.status(404).json({ error: 'OOPS!!! 404 Page Not Found' });
+  res.status(404).send('OOPS!!! 404 Page Not Found');
 });
 
-// ✅ Custom Error Middleware
+// ✅ Error Middleware
 app.use(errorMiddleware);
 
 export default app;
+

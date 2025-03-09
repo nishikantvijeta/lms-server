@@ -1,7 +1,8 @@
 import cookieParser from 'cookie-parser';
-config();
+
 import express from 'express';
 import { config } from 'dotenv';
+config();
 import cors from 'cors';
 import morgan from 'morgan';
 import errorMiddleware from './middlewares/error.middleware.js';

@@ -28,7 +28,7 @@ console.log("Request User Data:", req.user);
   if (user.role === 'ADMIN') {
     return next(new AppError('Admin cannot purchase a subscription', 400));
   }
-
+console.log("Razorpay Plan ID:", process.env.RAZORPAY_PLAN_ID);
   // Creating a subscription using razorpay that we imported from the server
   const subscription = await razorpay.subscriptions.create({
     plan_id: process.env.RAZORPAY_PLAN_ID, // The unique plan ID

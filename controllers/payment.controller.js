@@ -12,6 +12,7 @@ import Payment from '../models/Payment.model.js';
  * @ACCESS Private (Logged in user only)
  */
 export const buySubscription = asyncHandler(async (req, res, next) => {
+  console.log("User from request:", req.user);
   // Extracting ID from request obj
   const { id } = req.user;
 console.log("Request User Data:", req.user);
@@ -34,6 +35,8 @@ console.log("Request User Data:", req.user);
     customer_notify: 1, // 1 means razorpay will handle notifying the customer, 0 means we will not notify the customer
     total_count: 12, // 12 means it will charge every month for a 1-year sub.
   });
+  console.log("Razorpay Plan ID:", process.env.RAZORPAY_PLAN_ID);
+
 
   // Adding the ID and the status to the user account
   user.subscription.id = subscription.id;

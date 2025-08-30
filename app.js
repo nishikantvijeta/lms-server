@@ -6,11 +6,9 @@ config();
 import cors from 'cors';
 import morgan from 'morgan';
 import errorMiddleware from './middlewares/error.middleware.js';
-import { Together } from 'together-ai';
+//import { Together } from 'together-ai';
 const app = express();
-const together = new Together({
-  apiKey: process.env.TOGETHER_API_KEY,
-});
+
 // Middlewares
 // Built-In
 app.use(express.json());
@@ -32,22 +30,32 @@ app.get('/ping', (_req, res) => {
 app.post('/api/chat', async (req, res) => {
   const { message } = req.body;
 
-  try {
-    const response = await together.chat.completions.create({
-     model: 'meta-llama/Llama-Vision-Free',
-      messages: [
-        { role: 'system', content: 'You are a helpful assistant.' },
-        { role: 'user', content: message },
-      ],
-      temperature: 0.7,
-      max_tokens: 200,
+
+
+ try {
+    const response = await fetch("https://api.perplexity.ai/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${process.env.PER_API_KEY}`
+      },
+      body: JSON.stringify({
+        model: "sonar-pro", // or sonar-small, sonar-medium depending on plan
+        messages: [
+          { role: "system", content: "You are a helpful assistant." },
+          { role: "user", content: message }
+        ]
+      })
     });
 
-    const reply = response.choices?.[0]?.message?.content || 'No response from model.';
+    const data = await response.json();
+    const reply = data?.choices?.[0]?.message?.content || "No response from model.";
+
     res.json({ reply });
+
   } catch (err) {
-    console.error('Together SDK error:', err);
-    res.status(500).json({ error: err.message || 'Internal server error' });
+    console.error("Perplexity API error:", err);
+    res.status(500).json({ error: err.message || "Internal server error" });
   }
 });
 // Import all routes

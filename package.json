@@ -25,6 +25,7 @@
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.0",
     "razorpay": "^2.8.4"
+      "together-ai": "^0.16.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"

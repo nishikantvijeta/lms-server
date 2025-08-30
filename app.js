@@ -6,9 +6,9 @@ config();
 import cors from 'cors';
 import morgan from 'morgan';
 import errorMiddleware from './middlewares/error.middleware.js';
-
+import { Together } from 'together-ai';
 const app = express();
-
+const together = new Together();
 // Middlewares
 // Built-In
 app.use(express.json());
@@ -27,7 +27,27 @@ app.use(cookieParser());
 app.get('/ping', (_req, res) => {
   res.send('Pong');
 });
+app.post('/api/chat', async (req, res) => {
+  const { message } = req.body;
 
+  try {
+    const response = await together.chat.completions.create({
+     model: 'meta-llama/Llama-Vision-Free',
+      messages: [
+        { role: 'system', content: 'You are a helpful assistant.' },
+        { role: 'user', content: message },
+      ],
+      temperature: 0.7,
+      max_tokens: 200,
+    });
+
+    const reply = response.choices?.[0]?.message?.content || 'No response from model.';
+    res.json({ reply });
+  } catch (err) {
+    console.error('Together SDK error:', err);
+    res.status(500).json({ error: err.message || 'Internal server error' });
+  }
+});
 // Import all routes
 import userRoutes from './routes/user.routes.js';
 import courseRoutes from './routes/course.routes.js';

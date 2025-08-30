@@ -8,7 +8,9 @@ import morgan from 'morgan';
 import errorMiddleware from './middlewares/error.middleware.js';
 import { Together } from 'together-ai';
 const app = express();
-const together = new Together();
+const together = new Together({
+  apiKey: process.env.TOGETHER_API_KEY,
+});
 // Middlewares
 // Built-In
 app.use(express.json());
